@@ -1,0 +1,1 @@
+ALTER TABLE public.vip_users ADD COLUMN IF NOT EXISTS wallet_balance numeric DEFAULT 0;

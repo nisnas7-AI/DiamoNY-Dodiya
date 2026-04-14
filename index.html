@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="he" dir="rtl" style="background-color: #F8F9FA;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+
+    <!-- Resource Hints: Preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="google347c81d92d4f37c4" />
+
+    <!-- Prevent white flash -->
+    <style>
+      html, body, #root { background-color: #F8F9FA; }
+    </style>
+
+    <!-- Security Headers (meta-level CSP) -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://*.supabase.co;
+      script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://*.supabase.co;
+      script-src-attr 'unsafe-inline';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' data: blob: https: http:;
+      font-src 'self' https://fonts.gstatic.com;
+      connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://api.openai.com https://*.google.com https://*.lovableproject.com https://*.lovable.app;
+      frame-src 'self' https://www.google.com https://www.youtube.com;
+      media-src 'self' https://*.supabase.co blob:;
+      worker-src 'self' blob:;
+      object-src 'none';
+      base-uri 'self';
+    " />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Critical Hero Image Preload (WebP) -->
+    <link rel="preload" as="image" href="/lovable-uploads/diamony-hero-logo.png" fetchpriority="high" />
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- SEO Keywords -->
+    <meta name="keywords" content="יהלומי מעבדה אשקלון, טבעות אירוסין בהתאמה אישית, צורפות עילית DiamoNY, תכשיטי יוקרה" />
+
+    <!-- Fallback title — React Helmet overrides per-page -->
+    <title>DiamoNY |-באשקלון תכשיטי זהב יהלומים ואבני חן בהתאמה אישית</title>
+    <meta name="author" content="DiamoNY" />
+    <link rel="canonical" href="https://diamony.me/" />
+
+    <meta name="description" content="סטודיו DiamoNY מתמחה בצורפות עילית בעיצוב אישי. טבעות אירוסין, תכשיטי יהלומים וזהב 14K/18K בעבודת יד בסטנדרט פרימיום עם תעודות גמולוגיות וליווי אישי.">
+
+    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/9CWJc3JppEMcnVoVzIMY7PLHMV53/social-images/social-1773783244189-Gemini_Generated_Image_bw7xw0bw7xw0bw7x.webp">
+    <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/9CWJc3JppEMcnVoVzIMY7PLHMV53/social-images/social-1773783244189-Gemini_Generated_Image_bw7xw0bw7xw0bw7x.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+
+    <!-- Global Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "JewelryStore",
+          "@id": "https://diamony.me/#organization",
+          "name": "DiamoNY",
+          "description": "סטודיו לצורפות עילית ועיצוב תכשיטי יוקרה בהתאמה אישית באשקלון.",
+          "url": "https://diamony.me",
+          "logo": "https://diamony.me/favicon.png",
+          "telephone": "+972-54-629-0534",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Ashkelon",
+            "addressCountry": "IL"
+          },
+          "priceRange": "₪₪₪",
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          },
+          "makesOffer": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Custom Engagement Rings",
+                "description": "Bespoke engagement ring design with 3D modeling, natural diamonds, and gemological certification.",
+                "url": "https://diamony.me/catalog/engagement-rings"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Custom Jewelry Design",
+                "description": "Full bespoke jewelry creation: consultation, 3D rendering, handcrafted production in 14K/18K gold.",
+                "url": "https://diamony.me/contact"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "האם ניתן לעצב טבעת אירוסין בעיצוב אישי ב-DiamoNY?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "כן, ב-DiamoNY אנו מתמחים בתהליך Bespoke מלא הכולל פגישת ייעוץ, הדמיית תלת-ממד (3D) של התכשיט וייצור ידני לפי דרישות הלקוח."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "האם היהלומים ב-DiamoNY מגיעים עם תעודות?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "כל תכשיטי היהלומים שלנו מלווים בתעודה גמולוגית מוסמכת המעידה על איכות היהלום, הניקיון והחיתוך שלו."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <meta property="og:title" content="DiamoNY |-באשקלון תכשיטי זהב יהלומים ואבני חן בהתאמה אישית">
+  <meta name="twitter:title" content="DiamoNY |-באשקלון תכשיטי זהב יהלומים ואבני חן בהתאמה אישית">
+  <meta property="og:description" content="סטודיו DiamoNY מתמחה בצורפות עילית בעיצוב אישי. טבעות אירוסין, תכשיטי יהלומים וזהב 14K/18K בעבודת יד בסטנדרט פרימיום עם תעודות גמולוגיות וליווי אישי.">
+  <meta name="twitter:description" content="סטודיו DiamoNY מתמחה בצורפות עילית בעיצוב אישי. טבעות אירוסין, תכשיטי יהלומים וזהב 14K/18K בעבודת יד בסטנדרט פרימיום עם תעודות גמולוגיות וליווי אישי.">
+</head>
+  <body class="overflow-x-hidden w-full max-w-[100vw]">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-NP5DSWF5"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- React preloader renders inside #root -->
+
+    <div id="root" class="w-full max-w-[100vw] overflow-x-hidden"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- C-1 fix: Analytics scripts moved to bottom of body with defer to unblock FCP -->
+    <!-- Google Tag Manager -->
+    <script defer>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-NP5DSWF5');
+    </script>
+    <!-- Google Analytics 4 (GA4) -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-50FZKC8K1W"></script>
+    <script defer>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50FZKC8K1W');
+    </script>
+  </body>
+</html>

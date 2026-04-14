@@ -1,0 +1,40 @@
+project_id = "prkkufqduzvpfonzsvie"
+
+[functions.ai-seo]
+verify_jwt = true
+
+[functions.ai-media-seo]
+verify_jwt = true
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.generate-banner]
+verify_jwt = true
+
+[functions.submit-contact-form]
+verify_jwt = false
+
+[functions.process-jewelry-vision]
+verify_jwt = true
+
+[functions.fetch-gold-prices]
+verify_jwt = false
+
+[functions.verify-captcha]
+verify_jwt = false
+
+[functions.serve-sitemap-xml]
+verify_jwt = false
+
+[functions.serve-robots-txt]
+verify_jwt = false
+
+[functions.serve-deal-meta]
+verify_jwt = false
+
+[functions.vip-auth]
+verify_jwt = false
+
+[functions.send-vip-lifecycle-email]
+verify_jwt = false

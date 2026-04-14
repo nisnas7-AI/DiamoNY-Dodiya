@@ -1,0 +1,1 @@
+ALTER TABLE public.testimonials ADD COLUMN IF NOT EXISTS product_image_url text;

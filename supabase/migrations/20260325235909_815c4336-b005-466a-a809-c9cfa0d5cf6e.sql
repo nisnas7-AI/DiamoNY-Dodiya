@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS site_content_key_unique ON public.site_content (key);

@@ -1,0 +1,1 @@
+ALTER TABLE public.brand_settings ADD COLUMN IF NOT EXISTS site_url text NOT NULL DEFAULT 'https://diamony.lovable.app';
