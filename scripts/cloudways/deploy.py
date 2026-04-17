@@ -324,11 +324,15 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.html [L]
 </IfModule>
 HTACCESS
-  # Cloudways nginx can return 404 for direct SPA routes before Apache rewrite.
-  # Keep extensionless fallback files for critical entry routes.
-  cp -f index.html diamony-secure-admin
-  cp -f index.html admin
+  # Nginx on this stack may serve extensionless copies as application/octet-stream
+  # (browser download). Use real directories + index.html for deep-link entry paths.
+  [ -f diamony-secure-admin ] && rm -f diamony-secure-admin
+  [ -f admin ] && rm -f admin
+  mkdir -p diamony-secure-admin admin
+  cp -f index.html diamony-secure-admin/index.html
+  cp -f index.html admin/index.html
   echo "Published static files to web root."
+  echo "If /admin/ or /diamony-secure-admin/ still 404 externally, purge Varnish for this app in the Cloudways panel (edge caches old 404s until purged or TTL expires)."
 else
   echo "CLOUDWAYS_PUBLISH_TO_WEB_ROOT is set but parent is not public_html ($PUB); skipping publish."
 fi
@@ -496,7 +500,9 @@ def main() -> int:
         print(
             "Published to parent public_html when CLOUDWAYS_PUBLISH_TO_WEB_ROOT=1. "
             "Use your Cloudways application URL (see conf/server.nginx on the server); "
-            "bare IP often returns 403 on Cloudways."
+            "bare IP often returns 403 on Cloudways. "
+            "After route or HTML changes, use Cloudways → Application → Purge Varnish so "
+            "deep links are not stuck on a cached 404."
         )
     else:
         print(
