@@ -113,7 +113,7 @@ const ProductGallery = ({
         className={`
           relative rounded-[20px] bg-background overflow-hidden p-8
           shadow-[0_20px_40px_rgba(0,0,0,0.08),0_10px_20px_rgba(0,0,0,0.05)]
-          transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]
+          transition-all duration-500 ease-luxury
           hover:shadow-[0_35px_70px_rgba(0,0,0,0.12),0_15px_30px_rgba(0,0,0,0.08)]
           hover:-translate-y-2
         `}

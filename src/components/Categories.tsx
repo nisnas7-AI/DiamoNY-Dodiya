@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import categoryRings from "@/assets/category-rings.jpg";
 import categoryEarrings from "@/assets/category-earrings.jpg";
 import categoryPendants from "@/assets/category-pendants.jpg";
@@ -80,7 +81,7 @@ const Categories = () => {
 
   // Fetch is_updating_soon status from categories table
   const { data: categoryStatuses } = useQuery({
-    queryKey: ["category-updating-soon-status"],
+    queryKey: ["category-updating-soon-status", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("categories")

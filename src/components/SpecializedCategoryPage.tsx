@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Home } from "lucide-react";
@@ -47,7 +48,7 @@ const SpecializedCategoryPage = ({ config }: Props) => {
 
   // For compound queries (e.g., pearl necklaces need category + trait)
   const { data: resolvedCategoryId } = useQuery({
-    queryKey: [`${config.queryKey}-category`, config.categorySlug],
+    queryKey: [`${config.queryKey}-category`, getBrandId(), config.categorySlug],
     queryFn: async () => {
       const { data } = await supabase
         .from("categories")
@@ -64,7 +65,7 @@ const SpecializedCategoryPage = ({ config }: Props) => {
   const categoryReady = !needsCategory || !!resolvedCategoryId;
 
   const { data: products = [], isLoading } = useQuery({
-    queryKey: [config.queryKey, resolvedCategoryId],
+    queryKey: [config.queryKey, getBrandId(), resolvedCategoryId],
     queryFn: async (): Promise<Product[]> => {
       let query = supabase
         .from("products")

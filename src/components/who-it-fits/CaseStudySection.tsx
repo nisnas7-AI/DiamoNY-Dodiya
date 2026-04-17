@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 

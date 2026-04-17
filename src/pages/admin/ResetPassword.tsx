@@ -7,12 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, Loader2, Shield, CheckCircle, AlertTriangle } from "lucide-react";
-import MfaChallenge from "@/components/admin/MfaChallenge";
-import { hasMfaEnrolled } from "@/components/admin/MfaChallenge";
+// MFA disabled for now — restore when re-enabling 2FA:
+// import MfaChallenge from "@/components/admin/MfaChallenge";
+// import { hasMfaEnrolled } from "@/components/admin/MfaChallenge";
 import diamonyLogo from "@/assets/diamony-logo.jpg";
 import { isPasswordPwned } from "@/lib/pwnedPasswordCheck";
 
-type ResetStep = "loading" | "mfa_required" | "new_password" | "success" | "error";
+type ResetStep = "loading" | /* "mfa_required" | */ "new_password" | "success" | "error";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -27,20 +28,17 @@ const ResetPassword = () => {
     const type = hashParams.get("type");
 
     if (type === "recovery") {
-      // User arrived via recovery link - check if MFA is enrolled
-      checkMfaAndProceed();
+      setStep("new_password");
     } else {
-      // Also check current session for recovery event
       supabase.auth.onAuthStateChange((event) => {
         if (event === "PASSWORD_RECOVERY") {
-          checkMfaAndProceed();
+          setStep("new_password");
         }
       });
 
-      // If no recovery event, check if already in a session
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session) {
-          checkMfaAndProceed();
+          setStep("new_password");
         } else {
           setStep("error");
         }
@@ -48,18 +46,17 @@ const ResetPassword = () => {
     }
   }, []);
 
-  const checkMfaAndProceed = async () => {
-    const { enrolled } = await hasMfaEnrolled();
-    if (enrolled) {
-      setStep("mfa_required");
-    } else {
-      setStep("new_password");
-    }
-  };
-
-  const handleMfaVerified = () => {
-    setStep("new_password");
-  };
+  // const checkMfaAndProceed = async () => {
+  //   const { enrolled } = await hasMfaEnrolled();
+  //   if (enrolled) {
+  //     setStep("mfa_required");
+  //   } else {
+  //     setStep("new_password");
+  //   }
+  // };
+  // const handleMfaVerified = () => {
+  //   setStep("new_password");
+  // };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,21 +107,21 @@ const ResetPassword = () => {
     }
   };
 
-  // MFA challenge screen
-  if (step === "mfa_required") {
-    return (
-      <>
-        <Helmet>
-          <title>אימות דו-שלבי | DiamoNY</title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
-        <MfaChallenge
-          onVerified={handleMfaVerified}
-          onCancel={() => navigate("/diamony-secure-admin")}
-        />
-      </>
-    );
-  }
+  // MFA challenge screen (disabled)
+  // if (step === "mfa_required") {
+  //   return (
+  //     <>
+  //       <Helmet>
+  //         <title>אימות דו-שלבי | DiamoNY</title>
+  //         <meta name="robots" content="noindex, nofollow" />
+  //       </Helmet>
+  //       <MfaChallenge
+  //         onVerified={handleMfaVerified}
+  //         onCancel={() => navigate("/diamony-secure-admin")}
+  //       />
+  //     </>
+  //   );
+  // }
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";

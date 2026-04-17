@@ -4,6 +4,7 @@ import { Search, User, ShoppingBag, Menu, Phone, Lock } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { useSocialSettings } from "@/contexts/SocialSettingsContext";
 import { SocialIcon } from "@/components/SocialIcons";
 import { useVip } from "@/contexts/VipContext";
@@ -69,13 +70,13 @@ const Header = () => {
   }, [isMenuOpen]);
 
   const { data: headerSettings } = useQuery({
-    queryKey: ["header-design-settings"],
+    queryKey: ["header-design-settings", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("site_content")
         .select("metadata")
         .eq("key", "header_design")
-        .single();
+        .maybeSingle();
       if (error && error.code !== "PGRST116") throw error;
       if (data?.metadata) return data.metadata as unknown as HeaderSettings;
       return DEFAULT_SETTINGS;

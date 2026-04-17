@@ -21,7 +21,8 @@ import LegalPagesEditor from "@/components/admin/LegalPagesEditor";
 import AdminErrorBoundary from "@/components/admin/AdminErrorBoundary";
 import AdminPinGate from "@/components/admin/AdminPinGate";
 import AdminPinSettings from "@/components/admin/AdminPinSettings";
-import MfaEnrollment from "@/components/admin/MfaEnrollment";
+// MFA / 2FA UI disabled for now — restore import when re-enabling:
+// import MfaEnrollment from "@/components/admin/MfaEnrollment";
 import VaultManager from "@/components/admin/VaultManager";
 import ProductionPipelineComponent from "@/components/admin/ProductionPipeline";
 import NfcCatalogManager from "@/components/admin/NfcCatalogManager";
@@ -33,6 +34,7 @@ import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import AdminSidebar, { SIDEBAR_CATEGORIES } from "@/components/admin/dashboard/AdminSidebar";
+import { featureFlags } from "@/lib/featureFlags";
 import CategoryWidgetCanvas from "@/components/admin/dashboard/CategoryWidgetCanvas";
 import AdminSearchBar from "@/components/admin/dashboard/AdminSearchBar";
 
@@ -319,7 +321,22 @@ function renderTabContent(tab: string) {
         </Card>
       );
     case "security":
-      return <div className="space-y-6"><MfaEnrollment /></div>;
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5" />
+              הגדרות אבטחה
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground text-sm">
+              אימות דו-שלבי (MFA) מושבת זמנית.
+            </p>
+            {/* <MfaEnrollment /> */}
+          </CardContent>
+        </Card>
+      );
     case "settings":
       return <AdminPinSettings />;
     case "production-pipeline":
@@ -334,6 +351,9 @@ function renderTabContent(tab: string) {
     case "inventory-link":
       return null;
     case "nfc-manager":
+      if (!featureFlags.nfcCatalog) {
+        return <p className="text-muted-foreground p-4">קטלוג NFC מושבת בהגדרות הסביבה.</p>;
+      }
       return (
         <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><Smartphone className="h-5 w-5" />ניהול קטלוג NFC</CardTitle></CardHeader>

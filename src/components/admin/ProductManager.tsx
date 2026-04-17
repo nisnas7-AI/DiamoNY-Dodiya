@@ -30,6 +30,7 @@ import FeaturedReviewSelector from "./FeaturedReviewSelector";
 import { LocalContentOverrides } from "@/lib/contentSync";
 import { generateEnglishSlug, ensureUniqueSlug, generateLegacySlug } from "@/lib/slugUtils";
 import { useAdminSaveMutation } from "@/hooks/useAdminSaveMutation";
+import { getBrandId } from "@/lib/brandId";
 
 interface Product {
   id: string;
@@ -271,7 +272,7 @@ const ProductManager = () => {
   const queryClient = useQueryClient();
 
   const { data: products, isLoading } = useQuery({
-    queryKey: ["admin-products"],
+    queryKey: ["admin-products", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
@@ -284,7 +285,7 @@ const ProductManager = () => {
   });
 
   const { data: categories } = useQuery({
-    queryKey: ["admin-categories"],
+    queryKey: ["admin-categories", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("categories")

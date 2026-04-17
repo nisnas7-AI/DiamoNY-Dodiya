@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,12 +32,11 @@ const BrandSettingsManager = () => {
   const [uploading, setUploading] = useState(false);
 
   const { data: row, isLoading } = useQuery({
-    queryKey: ["brand-settings-admin"],
+    queryKey: ["brand-settings-admin", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("brand_settings")
         .select("*")
-        .limit(1)
         .maybeSingle();
       if (error) throw error;
       return data as BrandRow | null;

@@ -102,6 +102,12 @@ export default {
         gold: "var(--shadow-gold)",
         product: "var(--shadow-product)",
       },
+      transitionDuration: {
+        "expand-description": "400ms",
+      },
+      transitionTimingFunction: {
+        luxury: "cubic-bezier(0.25, 0.8, 0.25, 1)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

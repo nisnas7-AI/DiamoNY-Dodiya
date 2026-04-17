@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 
 /**
  * Generates an English-only slug from name_en and SKU

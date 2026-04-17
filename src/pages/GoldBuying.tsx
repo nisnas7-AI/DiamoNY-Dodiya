@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SITE_URL } from "@/lib/siteConfig";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";

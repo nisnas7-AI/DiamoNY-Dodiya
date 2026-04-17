@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { Skeleton } from "@/components/ui/skeleton";
 import OptimizedImage from "@/components/ui/OptimizedImage";
 import PriceDisplay from "@/components/ui/PriceDisplay";
@@ -49,7 +50,7 @@ const ProductGridBlock = memo(({ data }: ProductGridBlockProps) => {
   } = data;
 
   const { data: products, isLoading } = useQuery({
-    queryKey: ['dynamic-products', product_ids, category_slug, limit],
+    queryKey: ['dynamic-products', getBrandId(), product_ids, category_slug, limit],
     queryFn: async () => {
       let query = supabase
         .from('products')

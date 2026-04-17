@@ -2,6 +2,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { cn } from "@/lib/utils";
+import { featureFlags } from "@/lib/featureFlags";
 
 export interface SidebarCategory {
   id: string;
@@ -20,7 +21,7 @@ const DIGITAL_ATELIER_CATEGORY: SidebarCategory = {
   widgetIds: ["atelier"],
 };
 
-export const SIDEBAR_CATEGORIES: SidebarCategory[] = [
+const SIDEBAR_CATEGORIES_ALL: SidebarCategory[] = [
   {
     id: "dashboard",
     label: "ראשי",
@@ -108,6 +109,10 @@ export const SIDEBAR_CATEGORIES: SidebarCategory[] = [
     widgetIds: ["security", "settings"],
   },
 ];
+
+export const SIDEBAR_CATEGORIES: SidebarCategory[] = SIDEBAR_CATEGORIES_ALL.filter(
+  (c) => c.id !== "nfc" || featureFlags.nfcCatalog
+);
 
 const iconMap: Record<string, any> = {
   LayoutDashboard: Icons.LayoutDashboard,

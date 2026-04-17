@@ -1,6 +1,7 @@
 // @stable — do not modify without architectural review
 import { lazy, Suspense, useState, useEffect } from "react";
 import { useLocation, BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { featureFlags } from "@/lib/featureFlags";
 import { useDynamicFavicon } from "@/hooks/useDynamicFavicon";
 
 import { Toaster } from "@/components/ui/toaster";
@@ -193,13 +194,21 @@ const App = () => {
                       <Route path="/knowledge/gemological-certificates" element={<GemologicalCertificates />} />
                       <Route path="/accessibility" element={<Accessibility />} />
                       <Route path="/page/:slug" element={<DynamicPage />} />
-                      <Route path="/nfc-catalog" element={<NfcCatalog />} />
-                      <Route path="/nfc-catalog/:slug" element={<NfcCategoryDetail />} />
+                      {featureFlags.nfcCatalog && (
+                        <>
+                          <Route path="/nfc-catalog" element={<NfcCatalog />} />
+                          <Route path="/nfc-catalog/:slug" element={<NfcCategoryDetail />} />
+                        </>
+                      )}
                       <Route path="/checkout" element={<Checkout />} />
                       <Route path="/digital-atelier" element={<DigitalAtelier />} />
                       <Route path="/who-it-fits" element={<WhoItFits />} />
-                      <Route path="/digital-card" element={<DigitalCard />} />
-                      <Route path="/q/r" element={<Navigate to="/digital-card?ref=qr" replace />} />
+                      {featureFlags.digitalCard && (
+                        <>
+                          <Route path="/digital-card" element={<DigitalCard />} />
+                          <Route path="/q/r" element={<Navigate to="/digital-card?ref=qr" replace />} />
+                        </>
+                      )}
                       
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />

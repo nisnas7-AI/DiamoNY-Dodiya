@@ -5,6 +5,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import PriceDisplay from "@/components/ui/PriceDisplay";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { type ProductSearchResult } from "@/types";
 
 interface SearchModalProps {

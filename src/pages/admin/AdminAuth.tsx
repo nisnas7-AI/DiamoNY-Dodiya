@@ -12,7 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { supabase } from "@/integrations/supabase/client";
-import MfaChallenge, { hasMfaEnrolled, isDeviceTrusted } from "@/components/admin/MfaChallenge";
+// MFA / 2FA temporarily disabled — restore when re-enabling:
+// import MfaChallenge, { hasMfaEnrolled, isDeviceTrusted } from "@/components/admin/MfaChallenge";
 
 const loginSchema = z.object({
   email: z.string().email("כתובת מייל לא תקינה"),
@@ -21,14 +22,14 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-type AuthStep = "login" | "mfa_challenge" | "checking";
+// type AuthStep = "login" | "mfa_challenge" | "checking";
 
 const AdminAuth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, isAdmin, isLoading, signIn } = useAdminAuth();
-  
-  const [authStep, setAuthStep] = useState<AuthStep>("login");
+
+  // const [authStep, setAuthStep] = useState<AuthStep>("login");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
@@ -39,37 +40,30 @@ const AdminAuth = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  // Redirect if already authenticated as admin
+  // Redirect if already authenticated as admin (MFA gate commented out for now)
   useEffect(() => {
     if (!isLoading && user && isAdmin) {
-      // Check if MFA is needed
-      checkMfaAndRedirect();
-    }
-  }, [user, isAdmin, isLoading]);
-
-  const checkMfaAndRedirect = async () => {
-    const { enrolled } = await hasMfaEnrolled();
-    if (!enrolled) {
       navigate("/admin");
-      return;
     }
+  }, [user, isAdmin, isLoading, navigate]);
 
-    // Check AAL level
-    const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-    if (data?.currentLevel === "aal2") {
-      navigate("/admin");
-      return;
-    }
-
-    // Check trusted device
-    if (isDeviceTrusted()) {
-      navigate("/admin");
-      return;
-    }
-
-    // Need MFA challenge
-    setAuthStep("mfa_challenge");
-  };
+  // const checkMfaAndRedirect = async () => {
+  //   const { enrolled } = await hasMfaEnrolled();
+  //   if (!enrolled) {
+  //     navigate("/admin");
+  //     return;
+  //   }
+  //   const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  //   if (data?.currentLevel === "aal2") {
+  //     navigate("/admin");
+  //     return;
+  //   }
+  //   if (isDeviceTrusted()) {
+  //     navigate("/admin");
+  //     return;
+  //   }
+  //   setAuthStep("mfa_challenge");
+  // };
 
   const onSubmit = async (values: LoginFormValues) => {
     setIsSubmitting(true);
@@ -87,8 +81,7 @@ const AdminAuth = () => {
         return;
       }
 
-      // After successful login, the auth state change will trigger the useEffect
-      // which calls checkMfaAndRedirect
+      // After successful login, useEffect redirects to /admin (MFA was checkMfaAndRedirect)
     } catch (error) {
       toast({
         title: "שגיאה",
@@ -142,14 +135,13 @@ const AdminAuth = () => {
     }
   };
 
-  const handleMfaVerified = () => {
-    navigate("/admin");
-  };
-
-  const handleMfaCancel = async () => {
-    await supabase.auth.signOut();
-    setAuthStep("login");
-  };
+  // const handleMfaVerified = () => {
+  //   navigate("/admin");
+  // };
+  // const handleMfaCancel = async () => {
+  //   await supabase.auth.signOut();
+  //   setAuthStep("login");
+  // };
 
   if (isLoading) {
     return (
@@ -159,18 +151,18 @@ const AdminAuth = () => {
     );
   }
 
-  // MFA Challenge screen
-  if (authStep === "mfa_challenge") {
-    return (
-      <>
-        <Helmet>
-          <title>אימות דו-שלבי | DiamoNY</title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
-        <MfaChallenge onVerified={handleMfaVerified} onCancel={handleMfaCancel} />
-      </>
-    );
-  }
+  // MFA Challenge screen (disabled)
+  // if (authStep === "mfa_challenge") {
+  //   return (
+  //     <>
+  //       <Helmet>
+  //         <title>אימות דו-שלבי | DiamoNY</title>
+  //         <meta name="robots" content="noindex, nofollow" />
+  //       </Helmet>
+  //       <MfaChallenge onVerified={handleMfaVerified} onCancel={handleMfaCancel} />
+  //     </>
+  //   );
+  // }
 
   // Show access denied if logged in but not admin
   if (user && !isAdmin && !isLoading) {

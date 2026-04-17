@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { useState, useEffect } from "react";
 
 const DEFAULT_LOGO_IMAGE = "/lovable-uploads/diamony-hero-logo.png";
@@ -196,8 +197,8 @@ const HeroSkeleton = () => (
 const Hero = () => {
   const [isContentReady, setIsContentReady] = useState(false);
   
-  const { data: heroSection, isLoading } = useQuery({
-    queryKey: ["homepage-hero"],
+  const { data: heroSection, isLoading, isError, error } = useQuery({
+    queryKey: ["homepage-hero", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("homepage_sections")
@@ -212,14 +213,20 @@ const Hero = () => {
 
   // Trigger content ready state after data loads for smooth transition
   useEffect(() => {
-    if (!isLoading && heroSection !== undefined) {
-      // Small delay to ensure images start loading
+    if (!isLoading) {
+      // Resolve skeleton even when query fails to avoid permanent loading state.
       const timer = setTimeout(() => {
         setIsContentReady(true);
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [isLoading, heroSection]);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isError) {
+      console.error("Failed to load homepage hero section", error);
+    }
+  }, [isError, error]);
 
   // Show skeleton during loading
   if (isLoading || !isContentReady) {

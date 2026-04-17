@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -73,7 +74,7 @@ const HeroManager = () => {
   const [overlaySize, setOverlaySize] = useState<number>(30);
 
   const { data: heroSection, isLoading } = useQuery({
-    queryKey: ["homepage-hero"],
+    queryKey: ["homepage-hero", getBrandId()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("homepage_sections")

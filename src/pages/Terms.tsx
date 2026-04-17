@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { SITE_URL } from "@/lib/siteConfig";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getBrandId } from "@/lib/brandId";
 import LegalPageLayout from "@/components/layout/LegalPageLayout";
 
 const Terms = () => {

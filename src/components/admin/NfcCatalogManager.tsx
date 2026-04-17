@@ -140,7 +140,11 @@ const NfcCatalogManager = () => {
         .select("*")
         .order("section")
         .order("display_order", { ascending: true }),
-      supabase.from("categories").select("id, name, slug").eq("is_active", true).order("name"),
+      supabase
+        .from("categories")
+        .select("id, name, slug")
+        .eq("is_active", true)
+        .order("name"),
     ]);
     const cards = (cardsData as NfcCard[]) || [];
     setCards(cards);

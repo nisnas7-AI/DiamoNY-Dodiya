@@ -41,7 +41,7 @@ const ProductReviewCard = ({ reviewId }: ProductReviewCardProps) => {
   return (
     <CardWrapper
       {...linkProps}
-      className="block mt-6 mb-4 rounded-3xl border border-[hsl(var(--accent))]/20 bg-[hsl(0,0%,8%)] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:shadow-[0_12px_40px_rgba(212,175,55,0.15)] hover:-translate-y-0.5 cursor-pointer group"
+      className="block mt-6 mb-4 rounded-3xl border border-[hsl(var(--accent))]/20 bg-[hsl(0,0%,8%)] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-luxury hover:shadow-[0_12px_40px_rgba(212,175,55,0.15)] hover:-translate-y-0.5 cursor-pointer group"
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
       onTouchStart={() => setIsExpanded(prev => !prev)}
@@ -67,7 +67,7 @@ const ProductReviewCard = ({ reviewId }: ProductReviewCardProps) => {
       {/* Review Text - Truncated by default, expands on hover/touch */}
       <div
         className={`
-          transition-[max-height] duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] overflow-hidden
+          transition-[max-height] duration-500 ease-luxury overflow-hidden
           ${isExpanded ? 'max-h-[500px]' : 'max-h-[4.2em]'}
         `}
       >

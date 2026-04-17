@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# DiamoNY — white-label storefront (Vite + React + Supabase)
 
-## Project info
+Production jewelry storefront with an admin surface. The codebase is structured as a **multi-tenant template**: one Supabase database can host multiple brands using `brand_id` and Row Level Security (see [`docs/SECURITY_RLS.md`](docs/SECURITY_RLS.md)).
 
-**URL**: https://lovable.dev/projects/3d2d1c28-7251-4ef4-87e9-4cb911821c48
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/3d2d1c28-7251-4ef4-87e9-4cb911821c48) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Quick start (local)
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+git clone <YOUR_REPO_URL>
+cd diamony
+npm install
+cp .env.example .env   # if present; otherwise configure VITE_* per docs/WHITE_LABEL.md
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Required environment variables for the app:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_BRAND_ID` (optional; defaults to seeded DiamoNY tenant UUID — [`src/lib/brandId.ts`](src/lib/brandId.ts))
 
-**Use GitHub Codespaces**
+## Database migrations
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+**This frontend expects the white-label migration to be applied** (columns such as `brand_id` on catalog tables). Deploy the database **before** or together with this app version.
 
-## What technologies are used for this project?
+Use the Supabase CLI from the repo root:
 
-This project is built with:
+```sh
+supabase link --project-ref <YOUR_PROJECT_REF>
+supabase db push
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+After schema changes, regenerate TypeScript types if you use generated `Database` types:
 
-## How can I deploy this project?
+```sh
+npx supabase gen types typescript --project-id "<PROJECT_REF>" --schema public > src/integrations/supabase/types.ts
+```
 
-Simply open [Lovable](https://lovable.dev/projects/3d2d1c28-7251-4ef4-87e9-4cb911821c48) and click on Share -> Publish.
+## Deploy (Cloudways / SSH)
 
-## Can I connect a custom domain to my Lovable project?
+See [`scripts/cloudways/README.md`](scripts/cloudways/README.md). The deploy script can sync sources and run `npm ci` / `npm run build` on the server, exporting any `VITE_*` variables from your env file into the remote shell so the build matches production.
 
-Yes, you can!
+## Documentation
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+| Doc | Description |
+|-----|-------------|
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Module map and data flow |
+| [`docs/WHITE_LABEL.md`](docs/WHITE_LABEL.md) | Env vars and onboarding |
+| [`docs/SECURITY_RLS.md`](docs/SECURITY_RLS.md) | RLS policies and verification |
+| [`docs/NEW_BRAND_CHECKLIST.md`](docs/NEW_BRAND_CHECKLIST.md) | Clone-to-live checklist |
+| [`docs/COPY_AND_RUN_NEW_BRAND.md`](docs/COPY_AND_RUN_NEW_BRAND.md) | Client steps: copy repo, new server / brand |
+| [`docs/CHANGELOG_CLIENT.md`](docs/CHANGELOG_CLIENT.md) | Non-technical changelog |
+| [`docs/CHANGELOG_ENGINEERING.md`](docs/CHANGELOG_ENGINEERING.md) | Technical changelog |
+| [`docs/legacy-lovable.md`](docs/legacy-lovable.md) | Historical Lovable editor notes |
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## History
+
+Early iterations of this repo used the Lovable hosted editor; local and SSH-based workflows are now the primary path for production changes.

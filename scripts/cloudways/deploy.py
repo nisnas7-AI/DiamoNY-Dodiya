@@ -239,6 +239,21 @@ def run_rsync(
     return subprocess.call(args)
 
 
+def vite_export_block() -> str:
+    """Shell exports for Vite `import.meta.env` — inject before `npm run build` on the remote host."""
+    lines: list[str] = []
+    for key in sorted(os.environ.keys()):
+        if not key.startswith("VITE_"):
+            continue
+        val = os.environ.get(key)
+        if val is None or str(val).strip() == "":
+            continue
+        lines.append(f"export {key}={shlex.quote(str(val))}")
+    if not lines:
+        return "# No VITE_* variables set in local env file — build uses defaults / empty Vite env.\n"
+    return "\n".join(lines) + "\n"
+
+
 def probe_script(remote_dir: str) -> str:
     """Shell snippet: print server state for a blank / Cloudways box."""
     parts: list[str] = [
@@ -283,6 +298,54 @@ def probe_script(remote_dir: str) -> str:
         'echo "=== Done probe =========="',
     ]
     return "\n".join(parts) + "\n"
+
+
+def remote_build_and_maybe_publish_script(remote_dir: str, publish_to_web_root: bool, vite_exports: str) -> str:
+    """Run npm ci/build in remote_dir; optionally copy dist/ to parent public_html for Cloudways."""
+    publish_block = ""
+    if publish_to_web_root:
+        publish_block = r"""
+PUB="$(cd .. && pwd)"
+if [ "$(basename "$PUB")" = "public_html" ]; then
+  echo "Publishing dist/ -> $PUB (Vite expects asset paths from /) ..."
+  test -d dist
+  cp -r dist/. "$PUB"/
+  cd "$PUB"
+  if [ -f index.php ] && [ ! -f index.php.cloudways-phpstack-disabled ]; then
+    mv -f index.php index.php.cloudways-phpstack-disabled
+  fi
+  cat > .htaccess <<'HTACCESS'
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+</IfModule>
+HTACCESS
+  echo "Published static files to web root."
+else
+  echo "CLOUDWAYS_PUBLISH_TO_WEB_ROOT is set but parent is not public_html ($PUB); skipping publish."
+fi
+"""
+    return f"""
+set -euo pipefail
+mkdir -p "{remote_dir}"
+cd "{remote_dir}"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "ERROR: node is not on PATH. On Cloudways, enable Node or load nvm in your SSH profile." >&2
+  exit 1
+fi
+
+echo "Node: $(node -v)  npm: $(npm -v)"
+{vite_exports}
+npm ci
+npm run build
+{publish_block}
+echo "Build finished. Static output: {remote_dir}/dist"
+"""
 
 
 def run_probe(host: str, port: int, user: str, password: str | None, key_path: str | None, remote_dir: str) -> int:
@@ -371,6 +434,11 @@ def main() -> int:
         "true",
         "yes",
     )
+    publish_to_web_root = os.environ.get("CLOUDWAYS_PUBLISH_TO_WEB_ROOT", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    )
 
     print(f"Local:  {local_root}")
     print(f"Remote: {user}@{host}:{remote_dir}")
@@ -387,21 +455,9 @@ def main() -> int:
             else:
                 print("Skipping file sync (--skip-sync or CLOUDWAYS_SKIP_RSYNC).")
 
-            remote_script = f"""
-set -euo pipefail
-mkdir -p "{remote_dir}"
-cd "{remote_dir}"
-
-if ! command -v node >/dev/null 2>&1; then
-  echo "ERROR: node is not on PATH. On Cloudways, enable Node or load nvm in your SSH profile." >&2
-  exit 1
-fi
-
-echo "Node: $(node -v)  npm: $(npm -v)"
-npm ci
-npm run build
-echo "Build finished. Static output: {remote_dir}/dist"
-"""
+            remote_script = remote_build_and_maybe_publish_script(
+                remote_dir, publish_to_web_root, vite_export_block()
+            )
             print("Running remote build...", flush=True)
             code = ssh_exec(client, remote_script, timeout=7200)
             if code != 0:
@@ -422,21 +478,9 @@ echo "Build finished. Static output: {remote_dir}/dist"
         else:
             print("Skipping rsync.")
 
-        remote_script = f"""
-set -euo pipefail
-mkdir -p "{remote_dir}"
-cd "{remote_dir}"
-
-if ! command -v node >/dev/null 2>&1; then
-  echo "ERROR: node is not on PATH." >&2
-  exit 1
-fi
-
-echo "Node: $(node -v)  npm: $(npm -v)"
-npm ci
-npm run build
-echo "Build finished. Static output: {remote_dir}/dist"
-"""
+        remote_script = remote_build_and_maybe_publish_script(
+            remote_dir, publish_to_web_root, vite_export_block()
+        )
         rc = run_ssh_subprocess(host, user, str(port), key_path, remote_script)
         if rc != 0:
             print("Remote setup failed.", file=sys.stderr)
@@ -444,10 +488,18 @@ echo "Build finished. Static output: {remote_dir}/dist"
 
     print()
     print("Done.")
-    print(
-        "Next: Point your app / Nginx document root to "
-        f"`{remote_dir}/dist` for static hosting."
-    )
+    if publish_to_web_root:
+        print(
+            "Published to parent public_html when CLOUDWAYS_PUBLISH_TO_WEB_ROOT=1. "
+            "Use your Cloudways application URL (see conf/server.nginx on the server); "
+            "bare IP often returns 403 on Cloudways."
+        )
+    else:
+        print(
+            "Next: Point your app / Nginx document root to "
+            f"`{remote_dir}/dist` for static hosting, or set "
+            "CLOUDWAYS_PUBLISH_TO_WEB_ROOT=1 when deploying under public_html/<subdir>."
+        )
     return 0
 
 

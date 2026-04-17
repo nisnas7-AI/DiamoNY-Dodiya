@@ -128,7 +128,7 @@ const ProductInfo = ({
 
       <div
         id="expanded-description"
-        className={`transition-[max-height,opacity] duration-[400ms] ease-in-out overflow-hidden ${isDescriptionExpanded ? "max-h-[4000px] opacity-100" : "max-h-0 opacity-0"}`}
+        className={`transition-[max-height,opacity] duration-expand-description ease-in-out overflow-hidden ${isDescriptionExpanded ? "max-h-[4000px] opacity-100" : "max-h-0 opacity-0"}`}
         aria-hidden={!isDescriptionExpanded}
       >
         {product.description &&
