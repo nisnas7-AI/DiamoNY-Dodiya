@@ -3,7 +3,6 @@ import { memo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { Skeleton } from "@/components/ui/skeleton";
 import PriceDisplay from "@/components/ui/PriceDisplay";
 import type { ProductLinksBlockData } from "../types";
@@ -19,7 +18,7 @@ const ProductLinksBlock = memo(({ data }: ProductLinksBlockProps) => {
   const { title, subtitle, product_ids } = data;
 
   const { data: products, isLoading } = useQuery({
-    queryKey: ["product-links-block", getBrandId(), product_ids],
+    queryKey: ["product-links-block", product_ids],
     queryFn: async () => {
       if (!product_ids?.length) return [];
       const { data, error } = await supabase

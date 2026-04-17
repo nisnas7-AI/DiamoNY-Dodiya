@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { Helmet } from "react-helmet-async";
 import { useBrandSettings } from "@/contexts/BrandSettingsContext";
 import { SectionSettingsProvider } from "@/contexts/SectionSettingsContext";

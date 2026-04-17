@@ -1,6 +1,6 @@
-# DiamoNY — white-label storefront (Vite + React + Supabase)
+# DiamoNY — storefront (Vite + React + Supabase)
 
-Production jewelry storefront with an admin surface. The codebase is structured as a **multi-tenant template**: one Supabase database can host multiple brands using `brand_id` and Row Level Security (see [`docs/SECURITY_RLS.md`](docs/SECURITY_RLS.md)).
+Production jewelry storefront with an admin surface backed by a single Supabase database. Row Level Security controls public catalog reads and admin writes (see [`docs/SECURITY_RLS.md`](docs/SECURITY_RLS.md)).
 
 ## Quick start (local)
 
@@ -8,7 +8,7 @@ Production jewelry storefront with an admin surface. The codebase is structured 
 git clone <YOUR_REPO_URL>
 cd diamony
 npm install
-cp .env.example .env   # if present; otherwise configure VITE_* per docs/WHITE_LABEL.md
+cp .env.example .env   # if present; otherwise set VITE_SUPABASE_* and optional VITE_* per README below
 npm run dev
 ```
 
@@ -16,11 +16,15 @@ Required environment variables for the app:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `VITE_BRAND_ID` (optional; defaults to seeded DiamoNY tenant UUID — [`src/lib/brandId.ts`](src/lib/brandId.ts))
+
+Optional:
+
+- `VITE_SITE_URL`
+- `VITE_FEATURE_NFC_CATALOG`, `VITE_FEATURE_DIGITAL_CARD` (see [`src/lib/featureFlags.ts`](src/lib/featureFlags.ts))
 
 ## Database migrations
 
-**This frontend expects the white-label migration to be applied** (columns such as `brand_id` on catalog tables). Deploy the database **before** or together with this app version.
+Apply migrations from [`supabase/migrations/`](supabase/migrations/) so the database matches the app (including [`supabase/migrations/20260417100000_revert_white_label_brands.sql`](supabase/migrations/20260417100000_revert_white_label_brands.sql) if you previously deployed the white-label migration).
 
 Use the Supabase CLI from the repo root:
 
@@ -44,10 +48,7 @@ See [`scripts/cloudways/README.md`](scripts/cloudways/README.md). The deploy scr
 | Doc | Description |
 |-----|-------------|
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Module map and data flow |
-| [`docs/WHITE_LABEL.md`](docs/WHITE_LABEL.md) | Env vars and onboarding |
 | [`docs/SECURITY_RLS.md`](docs/SECURITY_RLS.md) | RLS policies and verification |
-| [`docs/NEW_BRAND_CHECKLIST.md`](docs/NEW_BRAND_CHECKLIST.md) | Clone-to-live checklist |
-| [`docs/COPY_AND_RUN_NEW_BRAND.md`](docs/COPY_AND_RUN_NEW_BRAND.md) | Client steps: copy repo, new server / brand |
 | [`docs/CHANGELOG_CLIENT.md`](docs/CHANGELOG_CLIENT.md) | Non-technical changelog |
 | [`docs/CHANGELOG_ENGINEERING.md`](docs/CHANGELOG_ENGINEERING.md) | Technical changelog |
 | [`docs/legacy-lovable.md`](docs/legacy-lovable.md) | Historical Lovable editor notes |

@@ -16,7 +16,6 @@ Add to your Cloudways env file (same file as `CLOUDWAYS_*`):
 ```env
 VITE_SUPABASE_URL=https://xxxx.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=eyJ...
-VITE_BRAND_ID=b0000000-0000-4000-8000-000000000001
 # Optional:
 # VITE_SITE_URL=https://your-domain.com
 # VITE_FEATURE_NFC_CATALOG=true

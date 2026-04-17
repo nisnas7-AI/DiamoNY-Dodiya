@@ -1,7 +1,6 @@
 import { createContext, useContext, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 
 export interface BrandSettings {
   brand_name: string;
@@ -27,7 +26,7 @@ export const useBrandSettings = () => useContext(BrandSettingsContext);
 
 export const BrandSettingsProvider = ({ children }: { children: ReactNode }) => {
   const { data } = useQuery({
-    queryKey: ["brand-settings", getBrandId()],
+    queryKey: ["brand-settings"],
     queryFn: async (): Promise<BrandSettings> => {
       const { data: rows, error } = await supabase
         .from("brand_settings")

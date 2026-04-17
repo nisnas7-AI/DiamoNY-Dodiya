@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";

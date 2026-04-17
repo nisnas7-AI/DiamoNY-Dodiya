@@ -3,7 +3,6 @@ import { SITE_URL } from "@/lib/siteConfig";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";

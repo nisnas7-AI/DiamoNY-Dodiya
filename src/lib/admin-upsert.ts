@@ -1,5 +1,4 @@
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 
 type SiteContentUpsertInput = {
   key: string;
@@ -88,7 +87,6 @@ export async function upsertSiteContentByKey({
     .upsert(
       [
         {
-          brand_id: getBrandId(),
           key,
           title,
           content,
@@ -98,7 +96,7 @@ export async function upsertSiteContentByKey({
           updated_at: new Date().toISOString(),
         },
       ],
-      { onConflict: "brand_id,key" },
+      { onConflict: "key" },
     )
     .select("id")
     .single() as any;

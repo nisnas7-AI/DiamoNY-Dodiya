@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ChevronLeft, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Category {

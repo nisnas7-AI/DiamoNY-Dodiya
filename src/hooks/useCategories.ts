@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { getBrandId } from '@/lib/brandId';
 
 interface Category {
   id: string;

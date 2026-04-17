@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 
 // Lazy fallback images — only resolved if DB returns zero products
 const fallbackImageUrl = "/placeholder.svg";
@@ -85,7 +84,7 @@ const FeaturedProducts = () => {
 
   // Single joined query — eliminates the N+1 waterfall between products and images
   const { data: dbProducts, isLoading } = useQuery({
-    queryKey: ["featured-products-joined", getBrandId()],
+    queryKey: ["featured-products-joined"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")

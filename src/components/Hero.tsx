@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { useState, useEffect } from "react";
 
 const DEFAULT_LOGO_IMAGE = "/lovable-uploads/diamony-hero-logo.png";
@@ -198,7 +197,7 @@ const Hero = () => {
   const [isContentReady, setIsContentReady] = useState(false);
   
   const { data: heroSection, isLoading, isError, error } = useQuery({
-    queryKey: ["homepage-hero", getBrandId()],
+    queryKey: ["homepage-hero"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("homepage_sections")

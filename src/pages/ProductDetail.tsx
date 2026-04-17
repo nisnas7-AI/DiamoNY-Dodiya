@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { trackDwellTime } from "@/lib/analyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { Helmet } from "react-helmet-async";
 import { Loader2 } from "lucide-react";
 import Header from "@/components/Header";
@@ -49,7 +48,7 @@ const ProductDetail = () => {
   }, [productSlug]);
 
   const { data: productRaw, isLoading, error } = useQuery({
-    queryKey: ["product-detail", getBrandId(), productSlug],
+    queryKey: ["product-detail", productSlug],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")

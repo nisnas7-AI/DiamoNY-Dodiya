@@ -1,26 +1,12 @@
--- RLS smoke checks for white-label migration (run manually in SQL editor).
--- Adjust UUIDs if your default brand id differs from the seeded template.
+-- Optional RLS smoke checks (run after migrations, e.g. supabase db push).
+-- Adjust roles if your project uses different JWT setup for anon.
 
--- Expected default brand id (must match migration seed + VITE_BRAND_ID default)
--- b0000000-0000-4000-8000-000000000001
+-- 1) Anonymous can read active products (policy: "Anyone can read active products")
+-- set role anon;
+-- select count(*)::int as active_products from public.products where is_active = true;
 
--- 1) default_brand_id() resolves
-select public.default_brand_id() as default_brand;
+-- 2) Anonymous can read homepage sections (policy: "Anyone can read homepage sections")
+-- select count(*)::int as homepage_sections from public.homepage_sections;
 
--- 2) As superuser / postgres: confirm policies exist on products
-select polname, polcmd, polroles::regrole[]
-from pg_policy p
-join pg_class c on c.oid = p.polrelid
-join pg_namespace n on n.oid = c.relnamespace
-where n.nspname = 'public' and c.relname = 'products'
-order by polname;
-
--- 3) Anonymous read: use Supabase "Run as anon" or set role in a safe session:
---    set local role anon;
---    select count(*) from public.products where is_active = true;
---    Expect only rows for default_brand_id() (RLS enforced).
-
--- 4) Negative: if you insert a second brand and attach products to it, anon must not see them:
---    (verify separately after creating test data; clean up after.)
-
-comment on schema public is 'rls_smoke.sql — companion to docs/SECURITY_RLS.md';
+-- 3) brand_settings is readable without auth (policy: "Anyone can read brand settings")
+-- select count(*)::int as brand_settings_rows from public.brand_settings;

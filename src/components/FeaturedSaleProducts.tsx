@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { Eye, Loader2, Tag, Percent } from "lucide-react";
 import OptimizedImage from "@/components/ui/OptimizedImage";
 import ProductLightbox from "./ProductLightbox";
@@ -15,7 +14,7 @@ const FeaturedSaleProducts = () => {
 
   // Fetch sale products with images joined inline
   const { data: saleProducts, isLoading } = useQuery({
-    queryKey: ["sale-products", getBrandId()],
+    queryKey: ["sale-products"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")

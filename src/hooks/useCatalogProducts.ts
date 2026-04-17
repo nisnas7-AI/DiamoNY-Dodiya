@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { type Product, transformDbProductToProduct } from "@/types";
-import { getBrandId } from "@/lib/brandId";
 
 type StockStatus = Database["public"]["Enums"]["stock_status"];
 
@@ -40,7 +39,6 @@ export const useCatalogProducts = ({
   const { data, isLoading } = useQuery({
     queryKey: [
       "catalog-products",
-      getBrandId(),
       categoryIdsToFilter,
       engagementFilter,
       isPearlCollection,

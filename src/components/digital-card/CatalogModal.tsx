@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getBrandId } from "@/lib/brandId";
 import { X, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -41,7 +40,7 @@ const DigitalCardCatalogModal = ({ open, onClose, theme }: CatalogModalProps) =>
 
   // Fetch NFC cards (categories) grouped by section
   const { data: cards, isLoading: cardsLoading } = useQuery({
-    queryKey: ["digital-card-nfc-cards", getBrandId()],
+    queryKey: ["digital-card-nfc-cards"],
     queryFn: async () => {
       const { data } = await supabase
         .from("nfc_catalog_cards")
@@ -56,7 +55,7 @@ const DigitalCardCatalogModal = ({ open, onClose, theme }: CatalogModalProps) =>
 
   // Fetch products for selected category
   const { data: products, isLoading: productsLoading } = useQuery({
-    queryKey: ["digital-card-products", getBrandId(), selectedCategoryId],
+    queryKey: ["digital-card-products", selectedCategoryId],
     queryFn: async () => {
       if (!selectedCategoryId) return [];
       const { data } = await supabase

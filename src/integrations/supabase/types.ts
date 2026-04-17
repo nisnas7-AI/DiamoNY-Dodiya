@@ -176,33 +176,8 @@ export type Database = {
         }
         Relationships: []
       }
-      brands: {
-        Row: {
-          created_at: string
-          display_name: string
-          id: string
-          is_default: boolean
-          slug: string
-        }
-        Insert: {
-          created_at?: string
-          display_name: string
-          id?: string
-          is_default?: boolean
-          slug: string
-        }
-        Update: {
-          created_at?: string
-          display_name?: string
-          id?: string
-          is_default?: boolean
-          slug?: string
-        }
-        Relationships: []
-      }
       brand_settings: {
         Row: {
-          brand_id: string
           brand_name: string
           created_at: string
           footer_about_text: string
@@ -214,7 +189,6 @@ export type Database = {
           whatsapp_number: string
         }
         Insert: {
-          brand_id?: string
           brand_name?: string
           created_at?: string
           footer_about_text?: string
@@ -226,7 +200,6 @@ export type Database = {
           whatsapp_number?: string
         }
         Update: {
-          brand_id?: string
           brand_name?: string
           created_at?: string
           footer_about_text?: string
@@ -237,19 +210,10 @@ export type Database = {
           updated_at?: string
           whatsapp_number?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "brand_settings_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: true
-            referencedRelation: "brands"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       categories: {
         Row: {
-          brand_id: string
           created_at: string
           description: string | null
           display_order: number | null
@@ -266,7 +230,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          brand_id?: string
           created_at?: string
           description?: string | null
           display_order?: number | null
@@ -283,7 +246,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          brand_id?: string
           created_at?: string
           description?: string | null
           display_order?: number | null
@@ -300,13 +262,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "categories_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: false
-            referencedRelation: "brands"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "categories_parent_id_fkey"
             columns: ["parent_id"]
@@ -647,7 +602,6 @@ export type Database = {
       }
       homepage_sections: {
         Row: {
-          brand_id: string
           content: string | null
           created_at: string
           cta_primary_text: string | null
@@ -666,7 +620,6 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
-          brand_id?: string
           content?: string | null
           created_at?: string
           cta_primary_text?: string | null
@@ -685,7 +638,6 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
-          brand_id?: string
           content?: string | null
           created_at?: string
           cta_primary_text?: string | null
@@ -703,15 +655,7 @@ export type Database = {
           updated_at?: string
           video_url?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "homepage_sections_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: false
-            referencedRelation: "brands"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       leads: {
         Row: {
@@ -871,7 +815,6 @@ export type Database = {
       }
       nfc_catalog_cards: {
         Row: {
-          brand_id: string
           category_id: string | null
           created_at: string
           custom_link: string | null
@@ -888,7 +831,6 @@ export type Database = {
           title: string
         }
         Insert: {
-          brand_id?: string
           category_id?: string | null
           created_at?: string
           custom_link?: string | null
@@ -905,7 +847,6 @@ export type Database = {
           title: string
         }
         Update: {
-          brand_id?: string
           category_id?: string | null
           created_at?: string
           custom_link?: string | null
@@ -927,13 +868,6 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "nfc_catalog_cards_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: false
-            referencedRelation: "brands"
             referencedColumns: ["id"]
           },
         ]
@@ -1082,7 +1016,6 @@ export type Database = {
       }
       orders: {
         Row: {
-          brand_id: string
           created_at: string
           customer_email: string | null
           customer_name: string | null
@@ -1095,7 +1028,6 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          brand_id?: string
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
@@ -1108,7 +1040,6 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          brand_id?: string
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
@@ -1120,15 +1051,7 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "orders_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: false
-            referencedRelation: "brands"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       page_views: {
         Row: {
@@ -1437,7 +1360,6 @@ export type Database = {
           ai_status: string | null
           ai_writing_style: string | null
           base_labor_markup: number | null
-          brand_id: string
           category_id: string | null
           created_at: string
           description: string | null
@@ -1490,7 +1412,6 @@ export type Database = {
           ai_status?: string | null
           ai_writing_style?: string | null
           base_labor_markup?: number | null
-          brand_id?: string
           category_id?: string | null
           created_at?: string
           description?: string | null
@@ -1543,7 +1464,6 @@ export type Database = {
           ai_status?: string | null
           ai_writing_style?: string | null
           base_labor_markup?: number | null
-          brand_id?: string
           category_id?: string | null
           created_at?: string
           description?: string | null
@@ -1593,13 +1513,6 @@ export type Database = {
           vip_discount_percentage?: number | null
         }
         Relationships: [
-          {
-            foreignKeyName: "products_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: false
-            referencedRelation: "brands"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "products_category_id_fkey"
             columns: ["category_id"]
@@ -1731,7 +1644,6 @@ export type Database = {
       }
       site_content: {
         Row: {
-          brand_id: string
           content: string | null
           created_at: string
           id: string
@@ -1743,7 +1655,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          brand_id?: string
           content?: string | null
           created_at?: string
           id?: string
@@ -1755,7 +1666,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          brand_id?: string
           content?: string | null
           created_at?: string
           id?: string
@@ -1766,15 +1676,7 @@ export type Database = {
           title?: string | null
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "site_content_brand_id_fkey"
-            columns: ["brand_id"]
-            isOneToOne: false
-            referencedRelation: "brands"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       site_reviews: {
         Row: {
