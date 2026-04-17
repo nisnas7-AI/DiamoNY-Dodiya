@@ -324,6 +324,10 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.html [L]
 </IfModule>
 HTACCESS
+  # Cloudways nginx can return 404 for direct SPA routes before Apache rewrite.
+  # Keep extensionless fallback files for critical entry routes.
+  cp -f index.html diamony-secure-admin
+  cp -f index.html admin
   echo "Published static files to web root."
 else
   echo "CLOUDWAYS_PUBLISH_TO_WEB_ROOT is set but parent is not public_html ($PUB); skipping publish."
